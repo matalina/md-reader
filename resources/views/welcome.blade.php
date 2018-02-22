@@ -13,7 +13,7 @@
                             <p>
                             <div aria-label="breadcrumb">
                                 <ol class="breadcrumb bg-light">
-                                @foreach($footer['titles'] as $title)
+                                @foreach($titles as $title)
                                     <li class="breadcrumb-item">{{ $title }}</li>
                                 @endforeach
                                 </ol>

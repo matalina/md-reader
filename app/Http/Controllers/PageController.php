@@ -76,10 +76,25 @@ class PageController extends Controller
         $document = $this->converter->parse($contents);
 
         $yaml = $document->getYAML();
+        
+        if(empty($yaml)) {
+            $titles = [];
+            $yaml = [];
+        }
+        else {
+            if(isset($yaml['titles'])) {
+                $titles = $yaml['titles'];
+            }
+            else {
+                $titles = [];
+            }
+        }
+        
         $html = $document->getContent();
         
         return view('welcome')
             ->with('menu',$this->menu)
+            ->with('titles', $titles)
             ->with('footer',$yaml)
             ->with('page', $html);
     }

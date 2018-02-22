@@ -28,6 +28,9 @@ class Navigation {
         $files = $disk->files($path);
         
          foreach($dirs as $dir) {
+             if(preg_match('/\.git/',$dir)) {
+                 continue;
+             }
             $segments = explode('/',$dir);
             $uri = $segments[count($segments) - 1];
             preg_match('/([0-9]*)\_?(.+)/', $uri, $match);
@@ -50,10 +53,12 @@ class Navigation {
             $link = explode('.', $file);
             $link_uri = $link[0];
             $order = !empty($match[1])?$match[1]:$name;
-            $items->put($order, [
-                'name' => $name,
-                'link' => base64_encode($link_uri),
-            ]);
+            if($link[1] == 'md') {
+                $items->put($order, [
+                    'name' => $name,
+                    'link' => base64_encode($link_uri),
+                ]);
+            }
         }
 
         return $items;
