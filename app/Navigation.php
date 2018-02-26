@@ -33,10 +33,16 @@ class Navigation {
              }
             $segments = explode('/',$dir);
             $uri = $segments[count($segments) - 1];
-            preg_match('/([0-9]*)\_?(.+)/', $uri, $match);
+            preg_match('/([0-9]*)\[_-]*(.+)/', $uri, $match);
+             if(empty($match)) {
+                 $name = $uri;
+             }
+             else {
+                 $name = $match[2];
+             }
             $new_dir = new Collection();
             $new_dir = $this->recursiveMenuCreation($disk, $new_dir, $dir);
-            $name = str_replace('-', ' ', $match[2]);
+            $name = str_replace('-', ' ', $name);
             $order = !empty($match[1])?$match[1]:$name;
             $items->put($order, [
                 'name' => $name,
@@ -48,12 +54,19 @@ class Navigation {
         foreach($files as $file) {
             $segments = explode('/',$file);
             $uri = explode('.', $segments[count($segments) - 1]);
-            preg_match('/([0-9]*)\_?(.+)/', $uri[0], $match);
+            preg_match('/([0-9]*)[_-]*(.+)/', $uri[0], $match);
             $name = str_replace('-', ' ', $match[2]);
             $link = explode('.', $file);
+            if(count($link) < 2) {
+                $ext = 'md';
+            }
+            else {
+                $ext = $link[1];
+            }
+                
             $link_uri = $link[0];
             $order = !empty($match[1])?$match[1]:$name;
-            if($link[1] == 'md') {
+            if($ext == 'md') {
                 $items->put($order, [
                     'name' => $name,
                     'link' => base64_encode($link_uri),
