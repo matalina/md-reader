@@ -23,7 +23,7 @@ import routes from './routes';
 
 Vue.use(VueRouter)
 
-Vue.component('mw-menu', Menu);
+
 Vue.component('mw-page', Page);
 
 const router = new VueRouter({
@@ -31,29 +31,16 @@ const router = new VueRouter({
 }) */
 
 import Vue from 'vue';
+import Folder from './components/Folder';
+
+Vue.component('mw-folder', Folder);
 
 const app = new Vue({
     el: '#app',
-    /*data: function() {
+    data: function() {
         return {
-            folders: {},
+            menu,
         }
     },
-    methods: {
-        openClose(name) {
-            this.folders[name].open = ! this.folders[name].open;
-        },
-        isOpen: function(name) {
-            if(this.folders[name] === undefined) {
-                this.addFolder(name);
-            }
-            return this.folders[name].open;
-        },
-        addFolder: function(name) {
-            if(this.folders[name] === undefined) {
-                this.folders[name] = {};
-                this.folders[name].open = true; 
-            }
-        }
-    },*/
+    
 });

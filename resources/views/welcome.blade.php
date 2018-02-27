@@ -5,7 +5,14 @@
         <div class="col-sm">
             <div class="row">
                 <div class="col-lg-3 col-sm-12">
-                   {!! $menu !!}
+                     <ul class="menu tree">
+                         <span class="folder">
+                            <i class="fas fa-fw fa-folder-open"></i>
+                            {{ config('app.name') }}
+                        </span>
+                        <mw-folder :menu="menu"
+                            ></mw-folder>
+                    </ul>    
                 </div>
                 <div class="col-lg-9 col-sm-12">
                     <article class="card">
@@ -53,4 +60,10 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('javascript')
+<script>
+    var menu = {!! json_encode($menu) !!}
+</script>
 @endsection

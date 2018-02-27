@@ -23,7 +23,7 @@ class PageController extends Controller
         
         $this->converter = $parser;
         $this->navigation = $nav;
-        $this->menu = $this->navigation->get()->create();
+        $this->menu = $this->navigation->get();
     }
     /**
      * Display a listing of the resource.

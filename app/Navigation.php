@@ -9,17 +9,18 @@ class Navigation {
     public function get() 
     {
         $disk = Storage::disk('notebook');
-        $items = new Collection();
+        $items = [];
 
         $this->items = $this->recursiveMenuCreation($disk, $items, '/');
         
-        return $this;
+        return $this->items;
     }
     
     public function create()
     {
         return view('layouts.menu')
-            ->with('items',$this->items);
+            ->with('folders', $this->items['folders'])
+            ->with('links', $this->items['links']);
     }
 
     protected function recursiveMenuCreation($disk, $items, $path)
@@ -40,15 +41,15 @@ class Navigation {
              else {
                  $name = $match[2];
              }
-            $new_dir = new Collection();
+            $new_dir = [];
             $new_dir = $this->recursiveMenuCreation($disk, $new_dir, $dir);
             $name = str_replace('-', ' ', $name);
             $order = !empty($match[1])?$match[1]:$name;
-            $items->put($order, [
+            $items['folders'][] = [
                 'name' => $name,
                 'uri' => $dir,
-                'folder' => $new_dir,
-            ]);
+                'folders' => $new_dir,
+            ];
         }
 
         foreach($files as $file) {
@@ -67,13 +68,13 @@ class Navigation {
             $link_uri = $link[0];
             $order = !empty($match[1])?$match[1]:$name;
             if($ext == 'md') {
-                $items->put($order, [
+                $items['links'][] = [
                     'name' => $name,
-                    'link' => base64_encode($link_uri),
-                ]);
+                    'url' => route('page',['page' => base64_encode($link_uri)]),
+                ];
             }
         }
-
+        
         return $items;
     }
 }
